@@ -21,3 +21,150 @@ vii) Kubernetes :- helps to manage docker images
 viii) docker
 
 
+==============================+++++++++++++++++++++++==========================================================
+               DETAILS about IPV4 IPV6 and CIDR ranges
+==============================+++++++++++++++++++++++==========================================================
+
+0.0.0.0/0 --> anyone can access from anywhere public access
+
+10.231.156.223  ==> 32 bit IPV4 address with 4 octet means 4 dots here 
+4 octets of 8 bits --> 4*8=32 bits
+00000000 to 11111111 
+255.255.255.255 max and 0.0.0.0 min
+
+2409:4080:e1d:2c4c:94dd:9187:4568:cb28 ==> 8 groups of 16-bit blocks (called hextets, not octets)
+8 hextets of 16 bits --> 16*8 =128 bits 
+
+
+🌐 What is CIDR?
+CIDR stands for Classless Inter-Domain Routing.
+It's just a short way to write IP ranges.
+-> CIDR stands for Classless Inter-Domain Routing.
+-> It’s a method for reserving  IP addresses range for a VPC for future allocation to resource for communication between them
+
+
+CIDR  	      Network Bits  	Host Bits	    Total IPs (2^Host Bits)
+/22                 22          10             2^10=>1024  
+/23                 23          9              2^9=> 512 
+/24	                24         	8	            2^8=> 256
+/25	                25	        7          	 2^7=>128
+/26	                26        	6	            2^6=>64
+/27              	  27	        5	            2^5=>32
+/28	                28	        4	            2^4=>16
+/30	                30	        2	            2^2=>4
+
+Example1 :- 10.111.11.128/26
+-IPv4 contains 32 bit address so from 26 are network bits and remaining are host bits 
+
+calculation :- 2 ^ 32- IP range ==> 2 ^ 32-26 ==> 64 range of IPs
+10.111.11.128/26  ==> 128 to 191 
+Breakdown -->
+Network IP	    10.111.11.128
+First Host IP	10.111.11.129
+Last Host IP	10.111.11.190
+
+Example 2 :-  10.151.20.0/22  //here it will be divided into 4 subnets bcoz each octet is of 8 bits and one 8 bit contains 256 ip addresss thats why it gets divided into subnets
+Breakdown of Subnets in 10.151.20.0/22:
+Subnet IP Range  Start IP Range  End IP range    Total IPs
+10.151.20.0/24	 10.151.20.0	   10.151.20.255 	    256
+10.151.21.0/24	 10.151.21.0	   10.151.21.255	    256
+10.151.22.0/24	 10.151.22.0	   10.151.22.255	    256
+10.151.23.0/24	 10.151.23.0	   10.151.23.255	    256
+
+📘 IPv4 vs IPv6 (Summary Table)
+Feature                                  	IPv4	                            IPv6
+
+Address Length	                      32 bits	                            128 bits
+Address Format       	              192.168.1.1	                  2409:4080:e1d:2c4c:94dd:9187:4568:cb28
+Total Addresses  	             ~4.3 billion (2³²)                  	~340 undecillion (2¹²⁸)
+Header Size	                         20 bytes                           	40 bytes
+Security	                     Optional (IPSec optional)     	Built-in (IPSec mandatory)
+Speed	                     Slightly faster in some cases	         More efficient routing
+NAT                       	Required (due to IP shortage)	     Not needed (enough IPs for all)
+Broadcasting	                      Supported                    	Not supported (uses multicast)
+Deployment	               Widely used	Slowly growing            Newer standard
+
+(Network Address Translation)
+
+===============================================================
+FILESYSTEM  ===>
+===============================================================
+
+Filesystem                                    Size  Used Avail Use% Mounted on
+devtmpfs                                      4.0M     0  4.0M   0% /dev
+tmpfs                                          63G   112K   63G   1% /dev/shm
+tmpfs                                          26G   1.1M   26G   1% /run
+/dev/mapper/rhel-root                          20G   1.7G   19G   9% /
+/dev/mapper/rhel-usr                           20G   6.7G   14G  34% /usr
+/dev/mapper/vg_Dev1-lv_base                    50G    390M   50G   1% /base
+/dev/mapper/vg_Dev1-lv_dev1                   131G    968M  130G   1% /Dev1
+/dev/sdb1                                     5.0G    449M  4.6G   9% /boot
+/dev/mapper/vg_kdump-lv_kdump                 138G   1018M  137G   1% /kdump
+/dev/mapper/vg_Dev1-lv_data                   800G   9.1G  791G   2% /data
+/dev/mapper/rhel-home                          10G   4.7G  5.4G  47% /home
+/dev/mapper/rhel-tmp                           25G    554M   25G   3% /tmp
+/dev/mapper/vg_Dev1-lv_keys                   5.0G     68M  5.0G   2% /keys
+/dev/mapper/rhel-opt                           10G   3.0G  7.1G  30% /opt
+/dev/mapper/rhel-var                           50G   2.3G   48G   5% /var
+/dev/mapper/vg_Dev1-lv_logs                   150G   4.6G  146G   4% /logs
+/dev/mapper/rhel-var_log                       50G   5.3G   45G  11% /var/log
+/dev/mapper/rhel-var_tmp                       10G    120M  9.9G   2% /var/tmp
+/dev/mapper/rhel-var_log_audit                 10G   4.7G  5.4G  47% /var/log/audit
+tmpfs                                          13G     32K   13G   1% /run/user/0
+
+
+📁 System partitions (with examples)
+/ (root): Core OS files.
+Example: Linux system files needed to run your server.
+
+/usr: Installed applications and utilities.
+Example: vim, python, or system libraries.
+
+/boot: Boot files.
+Example: Linux kernel and GRUB bootloader files.
+
+/opt: Optional or third-party software.
+Example: Jenkins installed here (/opt/jenkins workspace).
+
+/home: User personal files and configs.
+Example: User xyz’s documents and settings.
+
+/var: Variable data like logs, mail, and databases.
+Example: Web server caches or email spool.
+
+/tmp: Temporary files, cleared on reboot.
+Example: Temporary upload files during a session.
+
+📊 Logs and monitoring
+/var/log: System and application logs.
+Example: Apache or system error logs.
+
+/var/log/audit: Security audit logs.
+Example: Tracking user login attempts.
+
+/logs: Application-specific logs.
+Example: Logs from your custom Java app.
+
+🛠 Project/application data
+/Dev1: Development environment or project files.
+Example: Source code and configs for Project Dev1.
+
+/data: Main data storage for apps.
+Example: User-uploaded files or database storage.
+
+/base: Base templates or static files.
+Example: Shared assets for multiple projects.
+
+/keys: Secure keys and certificates.
+Example: SSH private keys or SSL certificates.
+
+🩺 Diagnostics
+/kdump: Kernel crash dumps for debugging.
+Example: Memory snapshot after system crash.
+
+💾 Temporary and runtime memory
+tmpfs / devtmpfs: Fast, in-memory storage for temporary system data.
+Example: Runtime sockets, shared memory for processes.
+
+
+
