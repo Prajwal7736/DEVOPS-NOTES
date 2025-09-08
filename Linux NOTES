@@ -845,8 +845,73 @@ cat softlink.txt
 # Error: No such file or directory
 📌 Now the soft link is broken, because it pointed to the original.
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-------------------------- CPU USAGE,DISK USAGE , RAM USAGE ---------------------------------------------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+i) RAM usage 
+-->
+free -h 
+
+ii) disk usage.
+-->
+df -kh 
+df -h
+
+iii)CPU usage
+-->
+ iostat  //can use this command to see cpu % 
+ top 
+
+iv)To see cpu config/details .
+-->
+lscpu  //cores
+nproc  //for logical cores 
+
+v)To see cpu/disk/RAM usage details for last one day .
+-->
+sar -u -f /var/log/sa/sa$(date +%d)  //cpu usage last one day *****************************************
+sar -r -f /var/log/sa/sa$(date +%d)  //ram usage
+sar -P ALL    //to see cpus usage per one cpu f
+where , 
+eg :- ****sa31 is binary file 
+sar → Shows system activity reports
+-u → Displays CPU usage stats
+-r  --> Displays RAM stats
+-f sa30 → Reads data from the log file for day 30 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-------------------------- PORT Details ---------------------------------------------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+i)command to see ports running now
+-->
+netstat -tulnp  //for current active ports status  && use ss instead of netstat for shortcut and modern command
+where ,
+-t → TCP ports
+-u → UDP ports
+-l → Listening ports
+-n → Show numeric addresses (don’t resolve DNS)
+-p → Show process ID and name
+output :-
+tcp         LISTEN       0            5                        0.0.0.0:8089                   0.0.0.0:*           users:(("python3",pid=2930458,fd=3))
+
+
+ii) for searching particular port id status
+-->
+ss -tulnp | grep :8090  
+netstat -tulnp | grep :8090
+
+iii) To see Process ids for any service 
+-->
+ps -ef 
+
+ps -ef | grep "service-name/pid" 
+
+129 server installed python3:- 
+
+tcp         LISTEN       0            5                        0.0.0.0:8089                   0.0.0.0:*           users:(("python3",pid=2930458,fd=3))
 
 
 
