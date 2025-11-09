@@ -102,8 +102,25 @@ xi)Namespace :-  They help logically group and isolate resources. Just like how 
 xii) Namespace vs label name
       Namespace:- 	A Kubernetes resource that acts as a virtual cluster/partition inside the main cluster	
 	  label name :-  A key-value pair attached to resources (like Pods) to categorize and organize them
-	  
-xiii) kubernetes flow in short :- eg:-
+
+xiii) livenessprobe vs readinessprobe :- 
+
+livenessprobe-->
+👉 Checks if the app is ready to receive traffic.
+
+If this probe fails, Kubernetes will not send requests to that pod (it’s removed from the Service load balancer).
+But the container stays running — it’s just marked as “not ready.”
+
+Example:
+Imagine your Spring Boot app needs 20 seconds to start.
+If K8s sends traffic before it’s ready → users get errors.
+
+🚦In short
+Probe	Checks if...	Action on failure	Example use
+Readiness	App is ready to serve traffic	Remove pod from load balancer	App still starting up
+Liveness	App is alive and healthy	Restart the container	App is hung or crashed
+
+xiv) kubernetes flow for ingress in short :- eg:-
 
 🧭 Imagine this setup
 
@@ -111,7 +128,6 @@ You have a frontend web app deployed in Kubernetes.
 You want users on the internet to reach it using a URL — like https://myapp.com.
 
 ---
-
 🧱 Flow step by step
 
 1️⃣ User (Browser)
@@ -121,19 +137,16 @@ A user opens https://myapp.com → request goes out to the internet.
 2️⃣ Ingress / Route
 
 Ingress (or Route in OpenShift) is like a doorman.
-
 It receives traffic coming from outside the cluster.
 
 It checks rules:
 “If someone calls myapp.com, send to frontend-service.”
-
 
 ➡️ Ingress = entry point to the cluster.
 
 3️⃣ Service
 
 The Service is like a load balancer inside the cluster.
-
 It sends traffic evenly to one of the running Pods.
 
 
@@ -142,14 +155,10 @@ It sends traffic evenly to one of the running Pods.
 4️⃣ Pod
 
 Pod runs your container (app).
-
 The Pod processes the request and sends back a response.
-
 
 ➡️ Pod = where your app actually lives.
 
-
----
 
 💡 Visual flow (easy mental picture)
 
@@ -162,7 +171,6 @@ User (Browser)
 [ Pod 1 ]   [ Pod 2 ]   [ Pod 3 ]
     ↖️    load balanced   ↗️
 
-
 ---
 
 ⚙️ Types of Service (how they expose apps)
@@ -173,6 +181,10 @@ ClusterIP  	       Inside cluster only	     Internal services
 NodePort	  Accessible on node IP + port	 Basic external access
 LoadBalancer	External IP (via cloud).    	Public access
 Ingress/Route	Domain-based routing	     Production frontend URLs
+
+xv) volumes vs volumemounts :- 
+
+--see below
 
 ##################################
 Docker & Kubernetes Overview
@@ -1421,3 +1433,43 @@ kubectl get events
 
 
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
+***volumes vs volumemounts
+
+volumes 🧱 and volumeMounts 📂 (with a tiny example):
+
+🧩 volumes vs volumeMounts (in short)
+Term	Defined Under	Purpose	Example Meaning
+volumes	Pod spec (spec.volumes)	Defines what storage source (ConfigMap, Secret, PVC, etc.) is available to the pod.	“Attach this ConfigMap or Secret to the pod.”
+volumeMounts	Inside container spec (containers[].volumeMounts)	Defines where inside the container’s filesystem the volume will be mounted.	“Put that ConfigMap’s content under /etc/config.”
+🧱 Mini Example
+spec:
+  volumes:
+    - name: app-config
+      configMap:
+        name: my-config
+
+  containers:
+    - name: myapp
+      image: nginx
+      volumeMounts:
+        - name: app-config
+          mountPath: /etc/config
+          readOnly: true
+
+
+Explanation:
+
+volumes → Says: use ConfigMap my-config as a data source.
+
+volumeMounts → Says: mount it inside the container at /etc/config.
+
+So inside the container:
+
+$ ls /etc/config
+config.yaml  settings.json
+
+
+✅ In one line:
+
+volumes = defines what to mount
+volumeMounts = defines where to mount it inside the container
